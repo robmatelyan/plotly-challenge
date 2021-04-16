@@ -10,6 +10,19 @@ d3.json("samples.json").then(function(data) {
 
     console.log(samples);
 
+    var trace = {
+        x: samples.sample_values,
+        y: samples.otu_ids,
+        type: "bar"
+    };
+
+    var data = [trace];
+
+    var layout = {
+        title: "bar Chart"
+    }
+
+    Plotly.newPlot("plot", data, layout);
 });
 
 // Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual
