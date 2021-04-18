@@ -55,7 +55,7 @@ d3.json("samples.json").then(function(data) {
                         
                         
                         
-    // // //bar chart
+    // bar chart
         var trace1 = {
             x: sliceOTU,
             y: sliceValues.map(function(x) {
@@ -66,8 +66,9 @@ d3.json("samples.json").then(function(data) {
 
                 
             }
-                
+        // chart data        
         var chartData = [trace1];
+        // chart layout
         var layout = {
             title: "Top 10 OTU by Individual",
             yaxis: { title: "OTU ID" },
@@ -76,9 +77,10 @@ d3.json("samples.json").then(function(data) {
             
 
         };
-                
+        //plot bar chart        
         Plotly.newPlot("bar", chartData, layout);
 
+        // bubble chart set up
         var trace2 = {
             x: OTU,
             y: values,
@@ -90,8 +92,9 @@ d3.json("samples.json").then(function(data) {
                 type: "heatmap"
                 }
         };
-
+        // bubble chart data
         var bubbleData = [trace2];
+        //bubble chart layout
         var layout2 = {
             title: "OTUs",
             showlegend: false,
@@ -99,6 +102,7 @@ d3.json("samples.json").then(function(data) {
             width: 600
 
             };
+            //plot bubbel chart
         Plotly.newPlot("bubble", bubbleData, layout2);
         
     }
