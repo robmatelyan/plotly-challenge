@@ -1,9 +1,11 @@
 //Use the D3 library to read in samples.json
 d3.json("samples.json").then(function(data) {
-    // select id numbers from data
-    var name = Object.values(data.names);
+    
     // drop down menu
     d3.selectAll("#selDataset").on("change", subjectID)
+
+    // select id numbers from data
+    var name = Object.values(data.names);
 
     function subjectID() {
         var dropDownMenu = d3.select("#selDataset");
@@ -20,28 +22,60 @@ d3.json("samples.json").then(function(data) {
             return output.id == dataSet;
         }
         
-        // get data
-        var samples = data.samples;
+        // assign variables for necessary data
+        var sample = Object.values(data.samples);
+        var selectedSample = sample.filter(selectID)[0];
+        // console.log(selectedSample);
+        var OTU = Object.values(selectedSample.otu_ids);
+        var OTU_labels = selectedSample.OTU_labels;
+        var values = selectedSample.sample_values; 
+        // console.log(values);
 
 
-      
- 
-    
-    
-    
-    // slice OTUs
-    
-    // demographic info
-    var demographic = Object.values(data.metadata);
-    var selectedDemographic = demographic.filter(selectID)[0];
-    var idDemographic = d3.select("#sample-metadata")
-    //build metadata table
-    idDemographic.html("");
-    Object.entries(selectedDemographic).forEach(([key,value]) => {
+        // demographic info
+        var demographic = Object.values(data.metadata);
+        var selectedDemographic = demographic.filter(selectID)[0];
+        var idDemographic = d3.select("#sample-metadata")
+        //build metadata table
+        idDemographic.html("");
+        Object.entries(selectedDemographic).forEach(([key,value]) => {
         idDemographic.append("p").text(`${key}: ${value}`)
-    })
 
-}
+
+        })
+
+    // slice variables
+        var sliceOTU = OTU.slice(0, 10);
+        
+        var sliceValues = values.slice(0, 10);
+    
+        // var sliceOTU_labels = OTU_labels.slice(0, 10);
+    
+        // console.log(sliceOTU_labels);
+                        
+                        
+                        
+    // // //bar chart
+        var trace1 = {
+            x: sliceOTU.reverse(),
+            y: sliceValues.reverse(),
+            type: "bar",
+            orientation: "h",
+
+                
+            }
+                
+        var chartData = [trace1];
+        var layout = {
+            title: "Top 10 OTU by Individual",
+            yaxis: { title: "OTU ID" },
+            xaxis: { title: "Sample Values" },
+            height: 600,
+            width: 800,
+        };
+                
+        Plotly.newPlot("bar", chartData, layout);
+    }
 
 subjectID();
 });
