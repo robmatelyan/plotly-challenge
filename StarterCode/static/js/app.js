@@ -1,6 +1,6 @@
 //Use the D3 library to read in samples.json
 d3.json("samples.json").then(function(data) {
-   
+    // select id numbers from data
     var name = Object.values(data.names);
     // drop down menu
     d3.selectAll("#selDataset").on("change", subjectID)
@@ -9,7 +9,7 @@ d3.json("samples.json").then(function(data) {
         var dropDownMenu = d3.select("#selDataset");
         var dataSet = dropDownMenu.property("value");
         
-
+        // loop through 'names'
         name.forEach(function(sample) {
             dropDownMenu.append("option")
             .text(sample)
@@ -19,6 +19,8 @@ d3.json("samples.json").then(function(data) {
         function selectID(output) {
             return output.id == dataSet;
         }
+        
+        // get data
         var samples = data.samples;
 
 
@@ -30,10 +32,11 @@ d3.json("samples.json").then(function(data) {
     // slice OTUs
     
     // demographic info
-    var demographic = data.metadata;
-    var selectedDemographic = demographic.filter(selectID);
+    var demographic = Object.values(data.metadata);
+    var selectedDemographic = demographic.filter(selectID)[0];
     var idDemographic = d3.select("#sample-metadata")
     //build metadata table
+    idDemographic.html("");
     Object.entries(selectedDemographic).forEach(([key,value]) => {
         idDemographic.append("p").text(`${key}: ${value}`)
     })
