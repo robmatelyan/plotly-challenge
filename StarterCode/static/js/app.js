@@ -78,6 +78,29 @@ d3.json("samples.json").then(function(data) {
         };
                 
         Plotly.newPlot("bar", chartData, layout);
+
+        var trace2 = {
+            x: OTU,
+            y: values,
+            text: OTU_labels,
+            mode: "markers",
+            marker: {
+                color: OTU,
+                size: values,
+                type: "heatmap"
+                }
+        };
+
+        var bubbleData = [trace2];
+        var layout2 = {
+            title: "OTUs",
+            showlegend: false,
+            height: 600,
+            width: 600
+
+            };
+        Plotly.newPlot("bubble", bubbleData, layout2);
+        
     }
 
 subjectID();
