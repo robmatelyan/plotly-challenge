@@ -27,9 +27,9 @@ d3.json("samples.json").then(function(data) {
         var selectedSample = sample.filter(selectID)[0];
         // console.log(selectedSample);
         var OTU = Object.values(selectedSample.otu_ids);
-        var OTU_labels = selectedSample.OTU_labels;
+        var OTU_labels = selectedSample.otu_labels;
         var values = selectedSample.sample_values; 
-        // console.log(values);
+        console.log(values);
 
 
         // demographic info
@@ -44,21 +44,23 @@ d3.json("samples.json").then(function(data) {
 
         })
 
-    // slice variables
-        var sliceOTU = OTU.slice(0, 10);
-        
+        // slice variables
+        var sliceOTU = OTU.slice(0, 10).reverse;
+ 
         var sliceValues = values.slice(0, 10);
     
-        // var sliceOTU_labels = OTU_labels.slice(0, 10);
+        var sliceOTU_labels = OTU_labels.slice(0, 10).reverse;
     
-        // console.log(sliceOTU_labels);
+        console.log(sliceOTU_labels);
                         
                         
                         
     // // //bar chart
         var trace1 = {
-            x: sliceOTU.reverse(),
-            y: sliceValues.reverse(),
+            x: sliceOTU,
+            y: sliceValues.map(function(x) {
+                return `OTU ${x}`
+            }),
             type: "bar",
             orientation: "h",
 
@@ -70,8 +72,9 @@ d3.json("samples.json").then(function(data) {
             title: "Top 10 OTU by Individual",
             yaxis: { title: "OTU ID" },
             xaxis: { title: "Sample Values" },
-            height: 600,
-            width: 800,
+            text: sliceOTU_labels,
+            
+
         };
                 
         Plotly.newPlot("bar", chartData, layout);
