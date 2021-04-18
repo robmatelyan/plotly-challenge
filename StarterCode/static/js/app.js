@@ -1,34 +1,46 @@
 //Use the D3 library to read in samples.json
 d3.json("samples.json").then(function(data) {
    
+    var name = Object.values(data.names);
     // drop down menu
     d3.selectAll("#selDataset").on("change", subjectID)
 
     function subjectID() {
-        var drowDownMenu = d3.select("#selDataset");
+        var dropDownMenu = d3.select("#selDataset");
         var dataSet = dropDownMenu.property("value");
         
-    }  
-    // grab values from the data
-    var name = data.names
+
+        name.forEach(function(sample) {
+            dropDownMenu.append("option")
+            .text(sample)
+            .property("value", sample);    
+        });
+        // id selection
+        function selectID(output) {
+            return output.id == dataSet;
+        }
+        var samples = data.samples;
+
+
+      
+ 
+    
+    
+    
+    // slice OTUs
+    
+    // demographic info
     var demographic = data.metadata;
-    var samples = data.samples;
+    var selectedDemographic = demographic.filter(selectID);
+    var idDemographic = d3.select("#sample-metadata")
+    //build metadata table
+    Object.entries(selectedDemographic).forEach(([key,value]) => {
+        idDemographic.append("p").text(`${key}: ${value}`)
+    })
 
-    console.log(name);
+}
 
-    var trace = {
-        x: samples.sample_values,
-        y: samples.otu_ids,
-        type: "bar"
-    };
-
-    var data = [trace];
-
-    var layout = {
-        title: "bar Chart"
-    }
-
-    // Plotly.newPlot("plot", data, layout);
+subjectID();
 });
 
 // Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual
